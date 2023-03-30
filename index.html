@@ -1,47 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>OpenAI API Demo</title>
-</head>
-<body>
-    <h1>OpenAI API Demo</h1>
-    
-    <p>输入：</p>
-    <textarea id="input"></textarea>
-    <button id="submitBtn">确认输入</button>
-    
-    <p>输出：</p>
-    <textarea id="output" readonly></textarea>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@openai/api@1.0.0/dist/index.js"></script>
-    <script src="main.js"></script>
-    
+  <head>
+    <meta charset="UTF-8">
+    <title>My Personal Website</title>
+  </head>
+  <body>
+    <h1>Welcome to My Personal Website</h1>
+    <textarea id="input" rows="5" cols="50"></textarea><br>
+    <button onclick="sendToOpenAI()">Submit</button><br>
+    <div id="output" contenteditable="false"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@openai/api@0.5.2/dist/openai-api.min.js"></script>
     <script>
-        // 获取元素
-        const inputElement = document.getElementById("input");
-        const submitBtn = document.getElementById("submitBtn");
-        
-        // 点击确认按钮时发送请求
-        submitBtn.addEventListener("click", async function(event) {
-            // 获取输入文本
-            const inputText = inputElement.value;
-            
-            try {
-                // 同步OpenAI API
-                const response = await openai.complete({
-                    engine: "davinci",
-                    prompt: inputText,
-                    maxTokens: 2048,
-                    temperature: 0.5
-                });
-                
-                // 显示输出文本
-                outputElement.value = response.data.choices[0].text;
-            } catch(error) {
-                // 显示错误消息
-                outputElement.value = "Error: " + error.message;
-            }
+      const OPENAI_API_KEY = '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';
+      const openai = new OpenAI(OPENAI_API_KEY);
+
+      function sendToOpenAI() {
+        const input = document.getElementById('input').value;
+        const output = document.getElementById('output');
+        output.innerText = 'Loading...';
+
+        openai.complete({
+          engine: 'davinci',
+          prompt: input,
+          maxTokens: 50,
+          n: 1,
+          temperature: 0.5,
+        })
+        .then(response => {
+          output.innerText = response.data.choices[0].text;
+        })
+        .catch(error => {
+          console.error(error);
+          output.innerText = 'OpenAI API connection failed';
         });
+      }
     </script>
-</body>
+  </body>
 </html>
