@@ -12,11 +12,11 @@ async function handleSubmit(event) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": `Bearer ${apiKey}`
+			"Authorization": `Bearer ${process.env.REACT_APP_API_KEY}`
 		},
 		body: JSON.stringify({
 			prompt: userInput,
-			max_tokens: 60,
+			max_tokens: 2048,
 			n: 1,
 			stop: ["\n"]
 		})
