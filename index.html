@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <meta charset="UTF-8">
     <title>OpenAI API Demo</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>OpenAI API Demo</h1>
-    <label for="input">Enter some text:</label>
+    <form>
+      <label for="input">Input:</label>
+      <input type="text" id="input">
+    </form>
     <br>
-    <textarea id="input" rows="4" cols="50"></textarea>
-    <br>
-    <button onclick="generate()">Generate Output</button>
-    <br>
-    <br>
-    <label for="output">Output:</label>
-    <br>
-    <textarea id="output" rows="8" cols="50"></textarea>
-    <script src="index.js"></script>
-</body>
+    <textarea id="output" readonly></textarea>
+    <script src="script.js"></script>
+  </body>
 </html>
