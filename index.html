@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
+<head>
+    <meta charset="utf-8">
     <title>My Personal Website</title>
-    <script src="https://cdn.jsdelivr.net/npm/@openai/api@0.7.0/build/index.js"></script>
-    <script>
-      const openai = new OpenAI(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);
-
-      function generateResponse() {
-        const prompt = document.getElementById("input").value;
-        const output = document.getElementById("output");
-        output.innerHTML = "Generating response...";
-        openai.complete({
-          engine: "davinci",
-          prompt: prompt,
-          maxTokens: 1024,
-          n: 1,
-          stop: ["\n"]
-        }).then(result => {
-          output.innerHTML = result.data.choices[0].text;
-        }).catch(error => {
-          output.innerHTML = "Error: " + error.message;
-        });
-      }
-    </script>
-  </head>
-  <body>
+    <!-- 引入jQuery库，用于方便的进行ajax请求 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
     <h1>Welcome to My Personal Website</h1>
-    <p>Please enter your text below:</p>
-    <input id="input" type="text">
+    <!-- 文本输入框 -->
+    <textarea id="input" rows="10" cols="50"></textarea>
     <br>
-    <button onclick="generateResponse()">Generate Response</button>
+    <!-- 按钮，用于触发OpenAI API请求 -->
+    <button onclick="generate()">Generate Output</button>
     <br>
-    <p>Response:</p>
-    <div id="output"></div>
-  </body>
+    <!-- 输出窗口，用于显示OpenAI API返回的结果 -->
+    <div id="output" contenteditable="false"></div>
+
+    <script>
+        function generate() {
+            // 获取文本输入框中的内容
+            var input_text = $("#input").val();
+            // 向OpenAI API发送请求
+            $.ajax({
+                url: "https://api.openai.com/v1/engines/davinci-codex/completions",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer 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"
+                },
+                method: "POST",
+                data: JSON.stringify({
+                    "prompt": input_text,
+                    "max_tokens": 50
+                }),
+                // 请求成功的回调函数
+                success: function(response) {
+                    // 将OpenAI API返回的结果显示在输出窗口中
+                    $("#output").html(response.choices[0].text);
+                },
+                // 请求失败的回调函数
+                error: function(xhr, status, error) {
+                    // 在输出窗口中显示错误信息
+                    $("#output").html("OpenAI API Error: " + error);
+                }
+            });
+        }
+    </script>
+</body>
 </html>
